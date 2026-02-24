@@ -27,6 +27,8 @@ base64ct = "=1.6.0"
 # Pin wit-bindgen and wasip2 to avoid edition2024 requirement
 wit-bindgen = "=0.46.0"
 wasip2 = "=1.0.1"
+# Pin time to avoid edition2024 requirement (time 0.3.37+ uses edition="2024" in manifest)
+time = "=0.3.36"
 
 # Encoding
 hex = "0.4"
