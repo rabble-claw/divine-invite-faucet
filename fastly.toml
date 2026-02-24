@@ -1,0 +1,60 @@
+# ABOUTME: Fastly Compute service configuration for divine-invite-faucet
+# ABOUTME: Defines KV stores, config stores, and backends for invite code service
+
+manifest_version = 3
+name = "divine-invite-faucet"
+description = "Invite code faucet for diVine on Nostr"
+authors = ["Divine <hello@divine.video>"]
+language = "rust"
+
+[local_server]
+
+  [local_server.kv_stores]
+
+    [local_server.kv_stores.invite_data]
+    file = "kv-store-data.json"
+
+  [local_server.config_stores]
+
+    [local_server.config_stores.invite_config]
+
+      [local_server.config_stores.invite_config.contents]
+      # Comma-separated list of admin pubkeys (hex, 32 bytes)
+      admin_pubkeys = ""
+      # Cashu mint URL to accept payments from
+      cashu_mint_url = "https://mint.minibits.cash/Bitcoin"
+      # Minimum payment in sats to get an invite code
+      cashu_price_sats = "1000"
+      # Base URL for this service
+      service_url = "https://invite.divine.video"
+
+  [local_server.backends]
+
+    # Cashu mint backend for token verification
+    [local_server.backends.cashu_mint]
+    url = "https://mint.minibits.cash"
+
+[setup]
+
+  [setup.kv_stores]
+
+    [setup.kv_stores.invite_data]
+    description = "Invite codes, user state, waitlist, and stats"
+
+  [setup.config_stores]
+
+    [setup.config_stores.invite_config]
+    description = "Service configuration"
+    items = [
+      { key = "admin_pubkeys", description = "Comma-separated admin pubkeys (hex)" },
+      { key = "cashu_mint_url", description = "Cashu mint URL for payment verification" },
+      { key = "cashu_price_sats", description = "Minimum sats required to buy invite code" },
+      { key = "service_url", description = "Base URL for this service" },
+    ]
+
+  [setup.backends]
+
+    [setup.backends.cashu_mint]
+    description = "Cashu ecash mint for payment verification"
+    address = "mint.minibits.cash"
+    port = 443

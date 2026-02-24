@@ -1,0 +1,38 @@
+# ABOUTME: Cargo manifest for divine-invite-faucet Fastly Compute service
+# ABOUTME: Invite code faucet for diVine with Nostr auth and Cashu payments
+
+[package]
+name = "divine-invite-faucet"
+version = "0.1.0"
+edition = "2021"
+authors = ["Divine <hello@divine.video>"]
+description = "Invite code faucet for diVine (decentralized video on Nostr)"
+
+[dependencies]
+# Fastly Compute SDK - pin to avoid edition2024 dependencies
+fastly = "=0.11.12"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Cryptography - SHA-256 hashing
+sha2 = "0.10"
+
+# Cryptography - Nostr signature verification (pure Rust, WASM-compatible)
+# Pin to 0.13.3 to avoid base64ct 1.8+ which requires edition2024
+k256 = { version = "=0.13.3", features = ["schnorr"] }
+# Pin base64ct to avoid edition2024 requirement
+base64ct = "=1.6.0"
+# Pin wit-bindgen and wasip2 to avoid edition2024 requirement
+wit-bindgen = "=0.46.0"
+wasip2 = "=1.0.1"
+
+# Encoding
+hex = "0.4"
+base64 = "0.22"
+
+[profile.release]
+lto = true
+opt-level = "s"
+strip = true
